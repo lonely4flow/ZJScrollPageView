@@ -533,7 +533,7 @@
 - (ZJCollectionView *)collectionView {
     if (_collectionView == nil) {
         ZJCollectionView *collectionView = [[ZJCollectionView alloc] initWithFrame:self.bounds collectionViewLayout:self.collectionViewLayout];
-        [collectionView setBackgroundColor:[UIColor whiteColor]];
+        [collectionView setBackgroundColor:[UIColor clearColor]];
         collectionView.pagingEnabled = YES;
         collectionView.scrollsToTop = NO;
         collectionView.showsHorizontalScrollIndicator = NO;
