@@ -12,6 +12,7 @@
 @property (strong, nonatomic) ZJSegmentStyle *segmentStyle;
 @property (weak, nonatomic) ZJScrollSegmentView *segmentView;
 @property (weak, nonatomic) ZJContentView *contentView;
+@property(nonatomic, weak) UIView *seperatorLine;
 
 @property (weak, nonatomic) UIViewController *parentViewController;
 @property (strong, nonatomic) NSArray *childVcs;
@@ -39,6 +40,14 @@
     // 触发懒加载
     self.segmentView.backgroundColor = [UIColor whiteColor];
     self.contentView.backgroundColor = [UIColor whiteColor];
+    if(self.segmentStyle.showSeperatorLine){
+        CGFloat y = self.segmentStyle.segmentHeight;
+        CGFloat width = self.bounds.size.width;
+        UIView *seperatorLine = [[UIView alloc] initWithFrame:CGRectMake(0, y, width, 1)];
+        seperatorLine.backgroundColor = self.segmentStyle.seperatorLineColor;
+        [self addSubview:seperatorLine];
+        self.seperatorLine = seperatorLine;
+    }
 }
 
 - (void)dealloc {
@@ -46,15 +55,13 @@
 }
 
 #pragma mark - public helper
-
-/** 给外界设置选中的下标的方法 */
-- (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated {
-    [self.segmentView setSelectedIndex:selectedIndex animated:animated];
-}
-/** 获取当前所在的pageIndex */
 - (NSInteger)selectIndex
 {
     return [[self.contentView valueForKeyPath:@"currentIndex"] integerValue];
+}
+/** 给外界设置选中的下标的方法 */
+- (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated {
+    [self.segmentView setSelectedIndex:selectedIndex animated:animated];
 }
 
 /**  给外界重新设置视图内容的标题的方法 */
