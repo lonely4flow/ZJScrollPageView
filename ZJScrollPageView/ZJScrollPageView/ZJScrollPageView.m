@@ -51,6 +51,11 @@
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated {
     [self.segmentView setSelectedIndex:selectedIndex animated:animated];
 }
+/** 获取当前所在的pageIndex */
+- (NSInteger)selectIndex
+{
+    return [[self.contentView valueForKeyPath:@"currentIndex"] integerValue];
+}
 
 /**  给外界重新设置视图内容的标题的方法 */
 - (void)reloadWithNewTitles:(NSArray<NSString *> *)newTitles {
