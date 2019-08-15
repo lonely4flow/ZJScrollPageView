@@ -156,7 +156,12 @@ static CGFloat const contentSizeXOff = 20.0;
         [titleView addGestureRecognizer:tapGes];
         
         CGFloat titleViewWidth = [titleView titleViewWidth];
-        [self.titleWidths addObject:@(titleViewWidth)];
+        if(self.segmentStyle.itemWidth>0){
+            [self.titleWidths addObject:@(self.segmentStyle.itemWidth)];
+        }else{
+            [self.titleWidths addObject:@(titleViewWidth)];
+        }
+        
         
         [self.titleViews addObject:titleView];
         [self.scrollView addSubview:titleView];
@@ -281,15 +286,26 @@ static CGFloat const contentSizeXOff = 20.0;
     if (self.scrollLine) {
         
         if (self.segmentStyle.isScrollTitle) {
-            self.scrollLine.frame = CGRectMake(coverX , self.zj_height - self.segmentStyle.scrollLineHeight, coverW , self.segmentStyle.scrollLineHeight);
+            CGFloat scrollLineWidth = coverW;
+            CGFloat scrollLineX = coverX;
+            if(self.segmentStyle.scrollLineWidth>0){
+                scrollLineWidth = self.segmentStyle.scrollLineWidth;
+                scrollLineX = coverX+(coverW-scrollLineWidth)/2;
+            }
+            self.scrollLine.frame = CGRectMake(scrollLineX , self.zj_height - self.segmentStyle.scrollLineHeight, scrollLineWidth , self.segmentStyle.scrollLineHeight);
 
         } else {
             if (self.segmentStyle.isAdjustCoverOrLineWidth) {
                 coverW = [self.titleWidths[_currentIndex] floatValue] + wGap;
                 coverX = (firstLabel.zj_width - coverW) * 0.5;
             }
-
-            self.scrollLine.frame = CGRectMake(coverX , self.zj_height - self.segmentStyle.scrollLineHeight, coverW , self.segmentStyle.scrollLineHeight);
+            CGFloat scrollLineWidth = coverW;
+            CGFloat scrollLineX = coverX;
+            if(self.segmentStyle.scrollLineWidth>0){
+                scrollLineWidth = self.segmentStyle.scrollLineWidth;
+                scrollLineX = coverX+(coverW-scrollLineWidth)/2;
+            }
+            self.scrollLine.frame = CGRectMake(scrollLineX , self.zj_height - self.segmentStyle.scrollLineHeight, scrollLineWidth , self.segmentStyle.scrollLineHeight);
 
         }
         
@@ -343,6 +359,13 @@ static CGFloat const contentSizeXOff = 20.0;
             if (weakSelf.segmentStyle.isScrollTitle) {
                 weakSelf.scrollLine.zj_x = currentTitleView.zj_x;
                 weakSelf.scrollLine.zj_width = currentTitleView.zj_width;
+                if(weakSelf.segmentStyle.scrollLineWidth>0){
+                    CGFloat oldX = weakSelf.scrollLine.zj_x;
+                    CGFloat oldWidth = weakSelf.scrollLine.zj_width;
+                    weakSelf.scrollLine.zj_width = weakSelf.segmentStyle.scrollLineWidth;
+                    weakSelf.scrollLine.zj_x = oldX+(oldWidth-weakSelf.scrollLine.zj_width)/2;
+                }
+                
             } else {
                 if (self.segmentStyle.isAdjustCoverOrLineWidth) {
                     CGFloat scrollLineW = [self.titleWidths[_currentIndex] floatValue] + wGap;
@@ -410,6 +433,12 @@ static CGFloat const contentSizeXOff = 20.0;
         if (self.segmentStyle.isScrollTitle) {
             self.scrollLine.zj_x = oldTitleView.zj_x + xDistance * progress;
             self.scrollLine.zj_width = oldTitleView.zj_width + wDistance * progress;
+            if(self.segmentStyle.scrollLineWidth>0){
+                CGFloat oldX = self.scrollLine.zj_x;
+                CGFloat oldWidth = self.scrollLine.zj_width;
+                self.scrollLine.zj_width = self.segmentStyle.scrollLineWidth;
+                self.scrollLine.zj_x = oldX+(oldWidth-self.scrollLine.zj_width)/2;
+            }
         } else {
             if (self.segmentStyle.isAdjustCoverOrLineWidth) {
                 CGFloat oldScrollLineW = [self.titleWidths[oldIndex] floatValue] + wGap;
