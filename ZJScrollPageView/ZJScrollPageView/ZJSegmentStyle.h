@@ -34,6 +34,8 @@ typedef NS_OPTIONS(NSInteger, SegmentViewComponent) {
 @property (assign, nonatomic, getter=isShowCover) BOOL showCover;
 /** 是否显示滚动条 默认为NO*/
 @property (assign, nonatomic, getter=isShowLine) BOOL showLine;
+/** 是否显示分隔线 默认为NO*/
+@property (assign, nonatomic, getter=isShowSeperatorLine) BOOL showSeperatorLine;
 /** 是否显示图片 默认为NO*/
 @property (assign, nonatomic, getter=isShowImage) BOOL showImage;
 /** 是否显示附加的按钮 默认为NO*/
@@ -71,6 +73,10 @@ typedef NS_OPTIONS(NSInteger, SegmentViewComponent) {
 @property (assign, nonatomic) CGFloat scrollLineWidth;
 /** 滚动条的颜色 */
 @property (strong, nonatomic) UIColor *scrollLineColor;
+/** 分隔线的颜色 */
+@property (strong, nonatomic) UIColor *seperatorLineColor;
+/** 分割线的高度 默认是1pt*/
+@property(nonatomic, assign) CGFloat seperatorLineHeight;
 /** 遮盖的颜色 */
 @property (strong, nonatomic) UIColor *coverBackgroundColor;
 /** 遮盖的圆角 默认为14*/
