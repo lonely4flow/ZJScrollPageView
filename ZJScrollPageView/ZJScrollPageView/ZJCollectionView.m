@@ -29,8 +29,29 @@
 }
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     if (self.contentOffset.x <= 0) {
+        // 适配FDFullscreenPopGesture框架
         if ([otherGestureRecognizer.delegate isKindOfClass:NSClassFromString(@"_FDFullscreenPopGestureRecognizerDelegate")]) {
             return YES;
+        }else{
+            // 适配系统自带返回框架
+            UIViewController *rootVC = [UIApplication sharedApplication].delegate.window.rootViewController;
+            UINavigationController *nav = nil;
+            if([rootVC isKindOfClass:[UITabBarController class]]){
+                UITabBarController *tabVC = (UITabBarController *)rootVC;
+                UIViewController *selectVC = tabVC.selectedViewController;
+                if([selectVC isKindOfClass:[UINavigationController class]]){
+                    nav = (UINavigationController *)selectVC;
+                }
+            }else if ([rootVC isKindOfClass:[UINavigationController class]]){
+                nav = (UINavigationController *)rootVC;
+            }
+            NSArray *gestureArr = nav.view.gestureRecognizers;
+            for (UIGestureRecognizer *gestureRecognizer in gestureArr) {
+                if ([gestureRecognizer isKindOfClass:[UIScreenEdgePanGestureRecognizer class]]) {
+                    [self.panGestureRecognizer requireGestureRecognizerToFail:gestureRecognizer];
+                }
+                
+            }
         }
     }
     return NO;
